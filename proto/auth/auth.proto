@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package service_auth;
 
-option go_package = "g-vinokurov.pyramidum-backend-service-auth.v1";
+option go_package = "g-vinokurov.pyramidum-backend-service-auth.v1;authv1";
 
 service Auth {
   // Register registers a new user.

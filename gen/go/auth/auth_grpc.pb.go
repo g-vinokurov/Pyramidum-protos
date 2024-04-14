@@ -4,7 +4,7 @@
 // - protoc             v5.26.1
 // source: auth/auth.proto
 
-package g_vinokurov_pyramidum_backend_service_auth_v1
+package authv1
 
 import (
 	context "context"
