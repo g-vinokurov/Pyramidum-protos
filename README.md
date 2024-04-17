@@ -1,1 +1,2 @@
-# Pyramidum-protos
+# protos
+Proto-files for gRPC
