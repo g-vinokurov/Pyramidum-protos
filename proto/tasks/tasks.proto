@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package tasks;
+
+option go_package = "github.com/g-vinokurov/pyramidum-protos/tasks;tasks";
+
+import "google/protobuf/timestamp.proto";
+
+service TasksService {
+  rpc Create (CreateRequest) returns (CreateResponse);
+  rpc Update (UpdateRequest) returns (UpdateResponse);
+  rpc Get (GetRequest) returns (GetResponse);
+  rpc GetByUserID (GetByUserIDRequest) returns (GetByUserIDResponse);
+}
+
+enum ProgressStatus {
+  PROGRESS_STATUS_IN_PROGRESS = 0;
+  PROGRESS_STATUS_FINISHED = 1;
+}
+
+message Task {
+  bytes id = 1;
+  string header = 2;
+  string text = 3;
+  repeated bytes internal_images = 4; // bytes === UUID
+  repeated string external_images = 5;
+  google.protobuf.Timestamp deadline = 6;
+  ProgressStatus progress_status = 7;
+  bool is_urgent = 8;
+  bool is_important = 9;
+  bytes owner_id = 10;
+  optional bytes parent_id = 11;
+  google.protobuf.Timestamp possible_deadline = 12;
+  int32 weight = 13;
+}
+
+message CreateRequest {
+  string header = 1;
+  string text = 2;
+  repeated bytes internal_images = 3; // bytes === UUID
+  repeated string external_images = 4;
+  google.protobuf.Timestamp deadline = 5;
+  ProgressStatus progress_status = 6;
+  bool is_urgent = 7;
+  bool is_important = 8;
+  bytes owner_id = 9;
+  optional bytes parent_id = 10;
+  google.protobuf.Timestamp possible_deadline = 11;
+  int32 weight = 12;
+}
+
+message CreateResponse {
+  bytes task_id = 1;
+}
+
+message UpdateRequest {
+  Task task = 1;
+}
+
+message UpdateResponse {
+  bytes task_id = 1;
+}
+
+message GetRequest {
+  bytes task_id = 1;
+}
+
+message GetResponse {
+  Task task = 1;
+}
+
+message GetByUserIDRequest {
+  bytes user_id = 1;
+}
+
+message GetByUserIDResponse {
+  repeated Task tasks = 1;
+}
