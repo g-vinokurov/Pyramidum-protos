@@ -1,4 +1,4 @@
-module github.com/g-vinokurov/pyramidum-protos
+module github.com/pyramidum-space/protos
 
 go 1.22
 
