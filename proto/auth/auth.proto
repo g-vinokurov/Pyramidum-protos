@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package service_auth;
 
-option go_package = "github.com/g-vinokurov/pyramidum-protos/auth;auth";
+option go_package = "github.com/pyramidum-space/protos/auth;auth";
 
 import "google/protobuf/empty.proto";
 

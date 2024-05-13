@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package motivator;
 
-option go_package = "github.com/g-vinokurov/pyramidum-protos/motivator;motivator";
+option go_package = "github.com/pyramidum-space/protos/motivator;motivator";
 
 import "google/protobuf/timestamp.proto";
 

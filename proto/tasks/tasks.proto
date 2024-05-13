@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package tasks;
 
-option go_package = "github.com/g-vinokurov/pyramidum-protos/tasks;tasks";
+option go_package = "github.com/pyramidum-space/protos/tasks;tasks";
 
 import "google/protobuf/timestamp.proto";
 
