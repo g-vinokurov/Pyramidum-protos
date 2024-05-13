@@ -4,13 +4,11 @@ package service_auth;
 
 option go_package = "github.com/pyramidum-space/protos/auth;auth";
 
-import "google/protobuf/empty.proto";
-
 service Auth {
   // Register registers a new user.
   rpc Register (RegisterRequest) returns (RegisterResponse);
   // Login logs in a user and returns an auth token.
-  rpc Login (LoginRequest) returns (google.protobuf.Empty);
+  rpc Login (LoginRequest) returns (LoginResponse);
 }
 
 message RegisterRequest {
@@ -26,4 +24,8 @@ message LoginRequest {
   string email = 1; // Email of the user to login.
   string password = 2; // Password of the user to login.
   // int32 app_id = 3; // ID of the app to login to.
+}
+
+message LoginResponse {
+  int64 user_id = 1; // User ID of the logged in user.
 }
