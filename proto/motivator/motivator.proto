@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package motivator;
+
+option go_package = "github.com/g-vinokurov/pyramidum-protos/motivator;motivator";
+
+import "google/protobuf/timestamp.proto";
+
+service MotivatorService {
+  rpc StartSession (StartSessionRequest) returns (StartSessionResponse);
+  rpc StopSession (StopSessionRequest) returns (StopSessionResponse);
+}
+
+message Motivator {
+  bytes id = 1;
+  bytes user_id = 2;
+  google.protobuf.Timestamp start_time = 3;
+  optional google.protobuf.Timestamp end_time = 4; // optional because session can be currently running
+  // possible additions here
+}
+
+message StartSessionRequest {
+  bytes user_id = 1;
+}
+
+message StartSessionResponse {
+  bytes id = 1;
+}
+
+message StopSessionRequest {
+  bytes id = 1;
+}
+
+message StopSessionResponse {
+  bytes id = 1;
+}
