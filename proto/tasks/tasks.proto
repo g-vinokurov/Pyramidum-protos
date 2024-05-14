@@ -14,8 +14,9 @@ service TasksService {
 }
 
 enum ProgressStatus {
-  PROGRESS_STATUS_IN_PROGRESS = 0;
-  PROGRESS_STATUS_FINISHED = 1;
+  PROGRESS_STATUS_CANCELED = 0;
+  PROGRESS_STATUS_IN_PROGRESS = 1;
+  PROGRESS_STATUS_DONE = 2;
 }
 
 message Task {
