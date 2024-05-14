@@ -13,14 +13,14 @@ service MotivatorService {
 
 message Motivator {
   bytes id = 1;
-  bytes user_id = 2;
+  int32 user_id = 2;
   google.protobuf.Timestamp start_time = 3;
   optional google.protobuf.Timestamp end_time = 4; // optional because session can be currently running
   // possible additions here
 }
 
 message StartSessionRequest {
-  bytes user_id = 1;
+  int32 user_id = 1;
 }
 
 message StartSessionResponse {
