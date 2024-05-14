@@ -23,7 +23,6 @@ message Task {
   bytes id = 1;
   string header = 2;
   string text = 3;
-  repeated bytes internal_images = 4; // bytes === UUID
   repeated string external_images = 5;
   google.protobuf.Timestamp deadline = 6;
   ProgressStatus progress_status = 7;
@@ -38,7 +37,6 @@ message Task {
 message CreateRequest {
   string header = 1;
   string text = 2;
-  repeated bytes internal_images = 3; // bytes === UUID
   repeated string external_images = 4;
   google.protobuf.Timestamp deadline = 5;
   ProgressStatus progress_status = 6;
