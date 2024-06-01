@@ -6,17 +6,18 @@ option go_package = "github.com/pyramidum-space/protos/tasks;tasks";
 
 import "google/protobuf/timestamp.proto";
 
-service TasksService {
-  rpc Create (CreateRequest) returns (CreateResponse);
-  rpc Update (UpdateRequest) returns (UpdateResponse);
-  rpc Task (TaskRequest) returns (TaskResponse);
-  rpc Tasks (TasksRequest) returns (TasksResponse);
-}
-
 enum ProgressStatus {
   PROGRESS_STATUS_CANCELED = 0;
   PROGRESS_STATUS_IN_PROGRESS = 1;
   PROGRESS_STATUS_DONE = 2;
+}
+
+service TasksService {
+  rpc Create (CreateRequest) returns (CreateResponse);
+  rpc Update (UpdateRequest) returns (UpdateResponse);
+  rpc Patch (PatchRequest) returns (PatchResponse);
+  rpc Task (TaskRequest) returns (TaskResponse);
+  rpc Tasks (TasksRequest) returns (TasksResponse);
 }
 
 message Task {
@@ -90,12 +91,15 @@ message TaskResponse {
 message TasksRequest {
   int32 owner_id = 1;
   optional string search = 2;
-  optional google.protobuf.Timestamp deadline = 3;
-  optional google.protobuf.Timestamp possible_deadline = 4;
-  optional ProgressStatus progress_status = 5;
-  optional bool is_urgent = 6;
-  optional bool is_important = 7;
-  optional int32 weight = 8;
+  optional google.protobuf.Timestamp deadline_from = 3;
+  optional google.protobuf.Timestamp deadline_to = 4;
+  optional google.protobuf.Timestamp possible_deadline_from = 5;
+  optional google.protobuf.Timestamp possible_deadline_to = 6;
+  optional ProgressStatus progress_status = 7;
+  optional bool is_urgent = 8;
+  optional bool is_important = 9;
+  optional int32 weight_from = 10;
+  optional int32 weight_to = 11;
 }
 
 message TasksResponse {
