@@ -6,13 +6,6 @@ option go_package = "github.com/pyramidum-space/protos/tasks;tasks";
 
 import "google/protobuf/timestamp.proto";
 
-service TasksService {
-  rpc Create (CreateRequest) returns (CreateResponse);
-  rpc Update (UpdateRequest) returns (UpdateResponse);
-  rpc Get (GetRequest) returns (GetResponse);
-  rpc GetByUserID (GetByUserIDRequest) returns (GetByUserIDResponse);
-}
-
 enum ProgressStatus {
   PROGRESS_STATUS_CANCELED = 0;
   PROGRESS_STATUS_IN_PROGRESS = 1;
@@ -32,6 +25,14 @@ message Task {
   optional bytes parent_id = 11;
   google.protobuf.Timestamp possible_deadline = 12;
   int32 weight = 13;
+}
+
+service TasksService {
+  rpc Create (CreateRequest) returns (CreateResponse);
+  rpc Update (UpdateRequest) returns (UpdateResponse);
+  rpc Patch (PatchRequest) returns (PatchResponse);
+  rpc Task (TaskRequest) returns (TaskResponse);
+  rpc Tasks (TasksRequest) returns (TasksResponse);
 }
 
 message CreateRequest {
@@ -60,18 +61,51 @@ message UpdateResponse {
   bytes task_id = 1;
 }
 
-message GetRequest {
+message ExternalImages {
+  repeated string external_images = 1;
+}
+
+message PatchRequest {
+  bytes task_id = 1;
+  optional string header = 2;
+  optional string text = 3;
+  optional ExternalImages external_images = 5;
+  optional google.protobuf.Timestamp deadline = 6;
+  optional ProgressStatus progress_status = 7;
+  optional bool is_urgent = 8;
+  optional bool is_important = 9;
+  optional int32 owner_id = 10;
+  optional bytes parent_id = 11;
+  optional google.protobuf.Timestamp possible_deadline = 12;
+  optional int32 weight = 13;
+}
+
+message PatchResponse {
   bytes task_id = 1;
 }
 
-message GetResponse {
+message TaskRequest {
+  bytes task_id = 1;
+}
+
+message TaskResponse {
   Task task = 1;
 }
 
-message GetByUserIDRequest {
-  int32 user_id = 1;
+message TasksRequest {
+  int32 owner_id = 1;
+  optional string search = 2;
+  optional google.protobuf.Timestamp deadline_from = 3;
+  optional google.protobuf.Timestamp deadline_to = 4;
+  optional google.protobuf.Timestamp possible_deadline_from = 5;
+  optional google.protobuf.Timestamp possible_deadline_to = 6;
+  optional ProgressStatus progress_status = 7;
+  optional bool is_urgent = 8;
+  optional bool is_important = 9;
+  optional int32 weight_from = 10;
+  optional int32 weight_to = 11;
 }
 
-message GetByUserIDResponse {
+message TasksResponse {
   repeated Task tasks = 1;
 }

@@ -24,8 +24,9 @@ const _ = grpc.SupportPackageIsVersion7
 type TasksServiceClient interface {
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
-	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
-	GetByUserID(ctx context.Context, in *GetByUserIDRequest, opts ...grpc.CallOption) (*GetByUserIDResponse, error)
+	Patch(ctx context.Context, in *PatchRequest, opts ...grpc.CallOption) (*PatchResponse, error)
+	Task(ctx context.Context, in *TaskRequest, opts ...grpc.CallOption) (*TaskResponse, error)
+	Tasks(ctx context.Context, in *TasksRequest, opts ...grpc.CallOption) (*TasksResponse, error)
 }
 
 type tasksServiceClient struct {
@@ -54,18 +55,27 @@ func (c *tasksServiceClient) Update(ctx context.Context, in *UpdateRequest, opts
 	return out, nil
 }
 
-func (c *tasksServiceClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
-	out := new(GetResponse)
-	err := c.cc.Invoke(ctx, "/tasks.TasksService/Get", in, out, opts...)
+func (c *tasksServiceClient) Patch(ctx context.Context, in *PatchRequest, opts ...grpc.CallOption) (*PatchResponse, error) {
+	out := new(PatchResponse)
+	err := c.cc.Invoke(ctx, "/tasks.TasksService/Patch", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *tasksServiceClient) GetByUserID(ctx context.Context, in *GetByUserIDRequest, opts ...grpc.CallOption) (*GetByUserIDResponse, error) {
-	out := new(GetByUserIDResponse)
-	err := c.cc.Invoke(ctx, "/tasks.TasksService/GetByUserID", in, out, opts...)
+func (c *tasksServiceClient) Task(ctx context.Context, in *TaskRequest, opts ...grpc.CallOption) (*TaskResponse, error) {
+	out := new(TaskResponse)
+	err := c.cc.Invoke(ctx, "/tasks.TasksService/Task", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tasksServiceClient) Tasks(ctx context.Context, in *TasksRequest, opts ...grpc.CallOption) (*TasksResponse, error) {
+	out := new(TasksResponse)
+	err := c.cc.Invoke(ctx, "/tasks.TasksService/Tasks", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -78,8 +88,9 @@ func (c *tasksServiceClient) GetByUserID(ctx context.Context, in *GetByUserIDReq
 type TasksServiceServer interface {
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
 	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
-	Get(context.Context, *GetRequest) (*GetResponse, error)
-	GetByUserID(context.Context, *GetByUserIDRequest) (*GetByUserIDResponse, error)
+	Patch(context.Context, *PatchRequest) (*PatchResponse, error)
+	Task(context.Context, *TaskRequest) (*TaskResponse, error)
+	Tasks(context.Context, *TasksRequest) (*TasksResponse, error)
 	mustEmbedUnimplementedTasksServiceServer()
 }
 
@@ -93,11 +104,14 @@ func (UnimplementedTasksServiceServer) Create(context.Context, *CreateRequest) (
 func (UnimplementedTasksServiceServer) Update(context.Context, *UpdateRequest) (*UpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
-func (UnimplementedTasksServiceServer) Get(context.Context, *GetRequest) (*GetResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+func (UnimplementedTasksServiceServer) Patch(context.Context, *PatchRequest) (*PatchResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Patch not implemented")
 }
-func (UnimplementedTasksServiceServer) GetByUserID(context.Context, *GetByUserIDRequest) (*GetByUserIDResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetByUserID not implemented")
+func (UnimplementedTasksServiceServer) Task(context.Context, *TaskRequest) (*TaskResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Task not implemented")
+}
+func (UnimplementedTasksServiceServer) Tasks(context.Context, *TasksRequest) (*TasksResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Tasks not implemented")
 }
 func (UnimplementedTasksServiceServer) mustEmbedUnimplementedTasksServiceServer() {}
 
@@ -148,38 +162,56 @@ func _TasksService_Update_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _TasksService_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetRequest)
+func _TasksService_Patch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TasksServiceServer).Get(ctx, in)
+		return srv.(TasksServiceServer).Patch(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/tasks.TasksService/Get",
+		FullMethod: "/tasks.TasksService/Patch",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TasksServiceServer).Get(ctx, req.(*GetRequest))
+		return srv.(TasksServiceServer).Patch(ctx, req.(*PatchRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _TasksService_GetByUserID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetByUserIDRequest)
+func _TasksService_Task_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TaskRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TasksServiceServer).GetByUserID(ctx, in)
+		return srv.(TasksServiceServer).Task(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/tasks.TasksService/GetByUserID",
+		FullMethod: "/tasks.TasksService/Task",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TasksServiceServer).GetByUserID(ctx, req.(*GetByUserIDRequest))
+		return srv.(TasksServiceServer).Task(ctx, req.(*TaskRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TasksService_Tasks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TasksRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TasksServiceServer).Tasks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/tasks.TasksService/Tasks",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TasksServiceServer).Tasks(ctx, req.(*TasksRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -200,12 +232,16 @@ var TasksService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _TasksService_Update_Handler,
 		},
 		{
-			MethodName: "Get",
-			Handler:    _TasksService_Get_Handler,
+			MethodName: "Patch",
+			Handler:    _TasksService_Patch_Handler,
 		},
 		{
-			MethodName: "GetByUserID",
-			Handler:    _TasksService_GetByUserID_Handler,
+			MethodName: "Task",
+			Handler:    _TasksService_Task_Handler,
+		},
+		{
+			MethodName: "Tasks",
+			Handler:    _TasksService_Tasks_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
