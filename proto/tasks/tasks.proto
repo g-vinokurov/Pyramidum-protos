@@ -9,8 +9,8 @@ import "google/protobuf/timestamp.proto";
 service TasksService {
   rpc Create (CreateRequest) returns (CreateResponse);
   rpc Update (UpdateRequest) returns (UpdateResponse);
-  rpc Get (GetRequest) returns (GetResponse);
-  rpc GetByUserID (GetByUserIDRequest) returns (GetByUserIDResponse);
+  rpc Task (TaskRequest) returns (TaskResponse);
+  rpc Tasks (TasksRequest) returns (TasksResponse);
 }
 
 enum ProgressStatus {
@@ -60,18 +60,44 @@ message UpdateResponse {
   bytes task_id = 1;
 }
 
-message GetRequest {
+message PatchRequest {
+  bytes task_id = 1;
+  optional string header = 2;
+  optional string text = 3;
+  repeated string external_images = 5;
+  optional google.protobuf.Timestamp deadline = 6;
+  optional ProgressStatus progress_status = 7;
+  optional bool is_urgent = 8;
+  optional bool is_important = 9;
+  optional int32 owner_id = 10;
+  optional bytes parent_id = 11;
+  optional google.protobuf.Timestamp possible_deadline = 12;
+  optional int32 weight = 13;
+}
+
+message PatchResponse {
   bytes task_id = 1;
 }
 
-message GetResponse {
+message TaskRequest {
+  bytes task_id = 1;
+}
+
+message TaskResponse {
   Task task = 1;
 }
 
-message GetByUserIDRequest {
-  int32 user_id = 1;
+message TasksRequest {
+  int32 owner_id = 1;
+  optional string search = 2;
+  optional google.protobuf.Timestamp deadline = 3;
+  optional google.protobuf.Timestamp possible_deadline = 4;
+  optional ProgressStatus progress_status = 5;
+  optional bool is_urgent = 6;
+  optional bool is_important = 7;
+  optional int32 weight = 8;
 }
 
-message GetByUserIDResponse {
+message TasksResponse {
   repeated Task tasks = 1;
 }
