@@ -12,14 +12,6 @@ enum ProgressStatus {
   PROGRESS_STATUS_DONE = 2;
 }
 
-service TasksService {
-  rpc Create (CreateRequest) returns (CreateResponse);
-  rpc Update (UpdateRequest) returns (UpdateResponse);
-  rpc Patch (PatchRequest) returns (PatchResponse);
-  rpc Task (TaskRequest) returns (TaskResponse);
-  rpc Tasks (TasksRequest) returns (TasksResponse);
-}
-
 message Task {
   bytes id = 1;
   string header = 2;
@@ -33,6 +25,14 @@ message Task {
   optional bytes parent_id = 11;
   google.protobuf.Timestamp possible_deadline = 12;
   int32 weight = 13;
+}
+
+service TasksService {
+  rpc Create (CreateRequest) returns (CreateResponse);
+  rpc Update (UpdateRequest) returns (UpdateResponse);
+  rpc Patch (PatchRequest) returns (PatchResponse);
+  rpc Task (TaskRequest) returns (TaskResponse);
+  rpc Tasks (TasksRequest) returns (TasksResponse);
 }
 
 message CreateRequest {
