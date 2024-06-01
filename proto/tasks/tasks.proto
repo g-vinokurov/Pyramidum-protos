@@ -61,11 +61,15 @@ message UpdateResponse {
   bytes task_id = 1;
 }
 
+message ExternalImages {
+  repeated string external_images = 1;
+}
+
 message PatchRequest {
   bytes task_id = 1;
   optional string header = 2;
   optional string text = 3;
-  repeated string external_images = 5;
+  optional ExternalImages external_images = 5;
   optional google.protobuf.Timestamp deadline = 6;
   optional ProgressStatus progress_status = 7;
   optional bool is_urgent = 8;
