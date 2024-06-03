@@ -10,53 +10,47 @@ import "google/protobuf/timestamp.proto";
 message Session {
   bytes id = 1;
   int32 user_id = 2;
-  google.protobuf.Timestamp start_time = 3;
-  int32 weight_per_block = 4;
-  google.protobuf.Duration destroy_time = 5;
-  repeated Block blocks = 6;
-  bool is_active = 7;
-  optional google.protobuf.Timestamp last_stop_time = 8;
-  repeated bytes task_ids = 9;
-}
-
-message Block {
-  int32 id = 1;
-  int32 weight = 2;
-  google.protobuf.Timestamp finish_time = 3;
+  float progress = 3;
+  uint32 blocks_number = 4;
+  uint32 block_weight = 5;
+  float increasing_speed = 6;
+  float decreasing_speed = 7;
+  bool is_active = 8;
+  optional google.protobuf.Timestamp modified_at = 9;
 }
 
 service MotivatorService {
   rpc StartSession (StartSessionRequest) returns (StartSessionResponse);
-  rpc Session (SessionRequest) returns (SessionResponse);
-  rpc CommitResult (CommitResultRequest) returns (CommitResultResponse);
+  rpc GetSession (GetSessionRequest) returns (GetSessionResponse);
+  rpc RefreshSession (RefreshSessionRequest) returns (RefreshSessionResponse);
   rpc StopSession (StopSessionRequest) returns (StopSessionResponse);
 }
 
 message StartSessionRequest {
-  int32 user_id = 1;
-  int32 weight_per_block = 2;
-  google.protobuf.Duration destroy_time = 3;
-  repeated bytes task_ids = 4;
+  bytes id = 1;
 }
 
 message StartSessionResponse {
   bytes id = 1;
 }
 
-message SessionRequest {
+message GetSessionRequest {
   bytes id = 1;
 }
 
-message SessionResponse {
+message GetSessionResponse {
   Session session = 1;
 }
 
-message CommitResultRequest {
-  bytes id = 1;
-  int32 weight = 2;
+message RefreshSessionRequest {
+  int32 user_id = 1;
+  uint32 blocks_number = 2;
+  uint32 block_weight = 3;
+  float increasing_speed = 4;
+  float decreasing_speed = 5;
 }
 
-message CommitResultResponse {
+message RefreshSessionResponse {
   bytes id = 1;
 }
 
