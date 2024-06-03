@@ -23,6 +23,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MotivatorServiceClient interface {
 	StartSession(ctx context.Context, in *StartSessionRequest, opts ...grpc.CallOption) (*StartSessionResponse, error)
+	Session(ctx context.Context, in *SessionRequest, opts ...grpc.CallOption) (*SessionResponse, error)
+	CommitResult(ctx context.Context, in *CommitResultRequest, opts ...grpc.CallOption) (*CommitResultResponse, error)
 	StopSession(ctx context.Context, in *StopSessionRequest, opts ...grpc.CallOption) (*StopSessionResponse, error)
 }
 
@@ -43,6 +45,24 @@ func (c *motivatorServiceClient) StartSession(ctx context.Context, in *StartSess
 	return out, nil
 }
 
+func (c *motivatorServiceClient) Session(ctx context.Context, in *SessionRequest, opts ...grpc.CallOption) (*SessionResponse, error) {
+	out := new(SessionResponse)
+	err := c.cc.Invoke(ctx, "/motivator.MotivatorService/Session", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *motivatorServiceClient) CommitResult(ctx context.Context, in *CommitResultRequest, opts ...grpc.CallOption) (*CommitResultResponse, error) {
+	out := new(CommitResultResponse)
+	err := c.cc.Invoke(ctx, "/motivator.MotivatorService/CommitResult", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *motivatorServiceClient) StopSession(ctx context.Context, in *StopSessionRequest, opts ...grpc.CallOption) (*StopSessionResponse, error) {
 	out := new(StopSessionResponse)
 	err := c.cc.Invoke(ctx, "/motivator.MotivatorService/StopSession", in, out, opts...)
@@ -57,6 +77,8 @@ func (c *motivatorServiceClient) StopSession(ctx context.Context, in *StopSessio
 // for forward compatibility
 type MotivatorServiceServer interface {
 	StartSession(context.Context, *StartSessionRequest) (*StartSessionResponse, error)
+	Session(context.Context, *SessionRequest) (*SessionResponse, error)
+	CommitResult(context.Context, *CommitResultRequest) (*CommitResultResponse, error)
 	StopSession(context.Context, *StopSessionRequest) (*StopSessionResponse, error)
 	mustEmbedUnimplementedMotivatorServiceServer()
 }
@@ -67,6 +89,12 @@ type UnimplementedMotivatorServiceServer struct {
 
 func (UnimplementedMotivatorServiceServer) StartSession(context.Context, *StartSessionRequest) (*StartSessionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StartSession not implemented")
+}
+func (UnimplementedMotivatorServiceServer) Session(context.Context, *SessionRequest) (*SessionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Session not implemented")
+}
+func (UnimplementedMotivatorServiceServer) CommitResult(context.Context, *CommitResultRequest) (*CommitResultResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CommitResult not implemented")
 }
 func (UnimplementedMotivatorServiceServer) StopSession(context.Context, *StopSessionRequest) (*StopSessionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StopSession not implemented")
@@ -102,6 +130,42 @@ func _MotivatorService_StartSession_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MotivatorService_Session_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SessionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MotivatorServiceServer).Session(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/motivator.MotivatorService/Session",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MotivatorServiceServer).Session(ctx, req.(*SessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MotivatorService_CommitResult_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommitResultRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MotivatorServiceServer).CommitResult(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/motivator.MotivatorService/CommitResult",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MotivatorServiceServer).CommitResult(ctx, req.(*CommitResultRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _MotivatorService_StopSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(StopSessionRequest)
 	if err := dec(in); err != nil {
@@ -130,6 +194,14 @@ var MotivatorService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "StartSession",
 			Handler:    _MotivatorService_StartSession_Handler,
+		},
+		{
+			MethodName: "Session",
+			Handler:    _MotivatorService_Session_Handler,
+		},
+		{
+			MethodName: "CommitResult",
+			Handler:    _MotivatorService_CommitResult_Handler,
 		},
 		{
 			MethodName: "StopSession",
