@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type MotivatorServiceClient interface {
 	StartSession(ctx context.Context, in *StartSessionRequest, opts ...grpc.CallOption) (*StartSessionResponse, error)
 	Session(ctx context.Context, in *SessionRequest, opts ...grpc.CallOption) (*SessionResponse, error)
-	CommitResult(ctx context.Context, in *CommitResultRequest, opts ...grpc.CallOption) (*CommitResultResponse, error)
+	RefreshSession(ctx context.Context, in *RefreshSessionRequest, opts ...grpc.CallOption) (*RefreshSessionResponse, error)
 	StopSession(ctx context.Context, in *StopSessionRequest, opts ...grpc.CallOption) (*StopSessionResponse, error)
 }
 
@@ -54,9 +54,9 @@ func (c *motivatorServiceClient) Session(ctx context.Context, in *SessionRequest
 	return out, nil
 }
 
-func (c *motivatorServiceClient) CommitResult(ctx context.Context, in *CommitResultRequest, opts ...grpc.CallOption) (*CommitResultResponse, error) {
-	out := new(CommitResultResponse)
-	err := c.cc.Invoke(ctx, "/motivator.MotivatorService/CommitResult", in, out, opts...)
+func (c *motivatorServiceClient) RefreshSession(ctx context.Context, in *RefreshSessionRequest, opts ...grpc.CallOption) (*RefreshSessionResponse, error) {
+	out := new(RefreshSessionResponse)
+	err := c.cc.Invoke(ctx, "/motivator.MotivatorService/RefreshSession", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +78,7 @@ func (c *motivatorServiceClient) StopSession(ctx context.Context, in *StopSessio
 type MotivatorServiceServer interface {
 	StartSession(context.Context, *StartSessionRequest) (*StartSessionResponse, error)
 	Session(context.Context, *SessionRequest) (*SessionResponse, error)
-	CommitResult(context.Context, *CommitResultRequest) (*CommitResultResponse, error)
+	RefreshSession(context.Context, *RefreshSessionRequest) (*RefreshSessionResponse, error)
 	StopSession(context.Context, *StopSessionRequest) (*StopSessionResponse, error)
 	mustEmbedUnimplementedMotivatorServiceServer()
 }
@@ -93,8 +93,8 @@ func (UnimplementedMotivatorServiceServer) StartSession(context.Context, *StartS
 func (UnimplementedMotivatorServiceServer) Session(context.Context, *SessionRequest) (*SessionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Session not implemented")
 }
-func (UnimplementedMotivatorServiceServer) CommitResult(context.Context, *CommitResultRequest) (*CommitResultResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CommitResult not implemented")
+func (UnimplementedMotivatorServiceServer) RefreshSession(context.Context, *RefreshSessionRequest) (*RefreshSessionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RefreshSession not implemented")
 }
 func (UnimplementedMotivatorServiceServer) StopSession(context.Context, *StopSessionRequest) (*StopSessionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StopSession not implemented")
@@ -148,20 +148,20 @@ func _MotivatorService_Session_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MotivatorService_CommitResult_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CommitResultRequest)
+func _MotivatorService_RefreshSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RefreshSessionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MotivatorServiceServer).CommitResult(ctx, in)
+		return srv.(MotivatorServiceServer).RefreshSession(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/motivator.MotivatorService/CommitResult",
+		FullMethod: "/motivator.MotivatorService/RefreshSession",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MotivatorServiceServer).CommitResult(ctx, req.(*CommitResultRequest))
+		return srv.(MotivatorServiceServer).RefreshSession(ctx, req.(*RefreshSessionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -200,8 +200,8 @@ var MotivatorService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _MotivatorService_Session_Handler,
 		},
 		{
-			MethodName: "CommitResult",
-			Handler:    _MotivatorService_CommitResult_Handler,
+			MethodName: "RefreshSession",
+			Handler:    _MotivatorService_RefreshSession_Handler,
 		},
 		{
 			MethodName: "StopSession",
