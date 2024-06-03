@@ -4,26 +4,59 @@ package motivator;
 
 option go_package = "github.com/pyramidum-space/protos/motivator;motivator";
 
+import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 
-service MotivatorService {
-  rpc StartSession (StartSessionRequest) returns (StartSessionResponse);
-  rpc StopSession (StopSessionRequest) returns (StopSessionResponse);
-}
-
-message Motivator {
+message Session {
   bytes id = 1;
   int32 user_id = 2;
   google.protobuf.Timestamp start_time = 3;
-  optional google.protobuf.Timestamp end_time = 4; // optional because session can be currently running
-  // possible additions here
+  int32 weight_per_block = 4;
+  google.protobuf.Duration destroy_time = 5;
+  repeated Block blocks = 6;
+  bool is_active = 7;
+  optional google.protobuf.Timestamp last_stop_time = 8;
+  repeated bytes task_ids = 9;
+}
+
+message Block {
+  int32 id = 1;
+  int32 weight = 2;
+  google.protobuf.Timestamp finish_time = 3;
+}
+
+service MotivatorService {
+  rpc StartSession (StartSessionRequest) returns (StartSessionResponse);
+  rpc Session (SessionRequest) returns (SessionResponse);
+  rpc CommitResult (CommitResultRequest) returns (CommitResultResponse);
+  rpc StopSession (StopSessionRequest) returns (StopSessionResponse);
 }
 
 message StartSessionRequest {
   int32 user_id = 1;
+  int32 weight_per_block = 2;
+  google.protobuf.Duration destroy_time = 3;
+  repeated bytes task_ids = 4;
 }
 
 message StartSessionResponse {
+  bytes id = 1;
+}
+
+message SessionRequest {
+  bytes id = 1;
+}
+
+message SessionResponse {
+  Session session = 1;
+}
+
+message CommitResultRequest {
+  bytes id = 1;
+  int32 weight = 2;
+}
+
+message CommitResultResponse {
   bytes id = 1;
 }
 
