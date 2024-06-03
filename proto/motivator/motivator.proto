@@ -21,7 +21,7 @@ message Session {
 
 service MotivatorService {
   rpc StartSession (StartSessionRequest) returns (StartSessionResponse);
-  rpc GetSession (GetSessionRequest) returns (GetSessionResponse);
+  rpc Session (SessionRequest) returns (SessionResponse);
   rpc RefreshSession (RefreshSessionRequest) returns (RefreshSessionResponse);
   rpc StopSession (StopSessionRequest) returns (StopSessionResponse);
 }
@@ -34,11 +34,11 @@ message StartSessionResponse {
   bytes id = 1;
 }
 
-message GetSessionRequest {
+message SessionRequest {
   bytes id = 1;
 }
 
-message GetSessionResponse {
+message SessionResponse {
   Session session = 1;
 }
 
